@@ -35,6 +35,8 @@ class ControllerOptions {
     private String rightPlayer = "Right Player";
     private char rightPlayerUp = 'i';
     private char rightPlayerDown = 'k';
+    
+    
     public ControllerOptions parse(String opt) {
         try {
             String[] parts = opt.split("=");

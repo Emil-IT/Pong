@@ -17,7 +17,6 @@ public interface PongModel {
      * the items move at the same speed, regardless of the framerate.
      */
     public void compute(Set<Input> input, long delta_t);
-
     /**
      * getters that take a BarKey LEFT or RIGHT
      * and return positions of the various items on the board
