@@ -33,22 +33,32 @@ public class MyPongModel implements PongModel {
 		this.rightPlayer = rightPlayer;
 		barPos.put(BarKey.LEFT, 100);
 		barPos.put(BarKey.RIGHT, 100);
-		barHeight.put(BarKey.LEFT, 200);
-		barHeight.put(BarKey.RIGHT, 200);
-		score.put(BarKey.LEFT, 0);
-		score.put(BarKey.RIGHT, 0);
+		resetBarHeight();
+		resetScore();
 		ballPos.setLocation(750, 500);
 		resetBall();
 		
 		
 	}
+	private void resetScore(){
+		score.put(BarKey.LEFT, 0);
+		score.put(BarKey.RIGHT, 0);
+	}
+	 private void resetBarHeight(){
+		 barHeight.put(BarKey.LEFT, 200);
+		 barHeight.put(BarKey.RIGHT, 200);
+	 }
 	
 	public void compute(Set<Input> input, long delta_t){
 		Iterator<Input> iterator = input.iterator();
 		while(iterator.hasNext()){
 			moveBar(iterator.next(), delta_t);
 		}
-		message = ("X=: " + ballPos.x + ", Y=: " + ballPos.y);
+		if(ballPos.y > getBarPos(BarKey.LEFT) && Math.abs(ballPos.y - getBarPos(BarKey.LEFT))  > delta_t * 0.75 ){
+			moveBar(new Input(BarKey.LEFT, Input.Dir.DOWN), delta_t);
+		}else if((ballPos.y < getBarPos(BarKey.LEFT) && Math.abs(ballPos.y - getBarPos(BarKey.LEFT))  > delta_t * 0.75 )){
+			moveBar(new Input(BarKey.LEFT, Input.Dir.UP), delta_t);
+		}
 		moveBall(delta_t);
 		
 	}
@@ -70,34 +80,40 @@ public class MyPongModel implements PongModel {
 		
 		//Bollen träffar högerkanten
 		if(ballPos.x >= 1500){
-			if(Math.abs(ballPos.y - getBarPos(BarKey.RIGHT)) > 100){
+			if(Math.abs(ballPos.y - getBarPos(BarKey.RIGHT)) > barHeight.get(BarKey.RIGHT)/2 + 25){
 				score.put(BarKey.LEFT, score.get(BarKey.LEFT) + 1);
+				if(score.get(BarKey.LEFT) == 10){
+					message = leftPlayer + " wins!!!!"; 
+					resetScore();
+					resetBarHeight();
+				}
+				barHeight.put(BarKey.RIGHT, barHeight.get(BarKey.RIGHT) - 10);
 				resetBall();
 			}
 			else{
 				ballSpeed++;
-				if(Math.abs(ballPos.y - getBarPos(BarKey.RIGHT)) <= 70){
-					ballDir = Math.PI - ballDir;
-				}else{
-						ballDir += Math.PI;
-				}
-				
+				ballDir = Math.PI - ballDir;
+				double hit = (double)(ballPos.y - getBarPos(BarKey.RIGHT)) / (double)(barHeight.get(BarKey.RIGHT)/2.0);
+				ballDir += hit/2;
 			}
 		}
 		
 		//Bollen träffar vänsterkanten
 		if(ballPos.x <= 0){ 
-			if(Math.abs(ballPos.y - getBarPos(BarKey.LEFT)) > 100){
+			if(Math.abs(ballPos.y - getBarPos(BarKey.LEFT)) > barHeight.get(BarKey.LEFT)/2 + 25){
 				score.put(BarKey.RIGHT, score.get(BarKey.RIGHT) + 1);
+				if(score.get(BarKey.RIGHT) == 10){
+					message = rightPlayer + " wins!!!!"; 
+					resetScore();
+				}
 				resetBall();
+				barHeight.put(BarKey.LEFT, barHeight.get(BarKey.LEFT) - 10);
 			}
 			else{
 				ballSpeed++;
-				if(Math.abs(ballPos.y - getBarPos(BarKey.LEFT)) <= 70){
-					ballDir = Math.PI - ballDir;
-				}else{
-						ballDir += Math.PI;
-				}
+				ballDir = Math.PI - ballDir;
+				double hit = (double)(ballPos.y - getBarPos(BarKey.LEFT)) / (double)(barHeight.get(BarKey.LEFT)/2.0);
+				ballDir -= hit/2;
 			}
 		}
 		
