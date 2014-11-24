@@ -54,11 +54,15 @@ public class MyPongModel implements PongModel {
 		while(iterator.hasNext()){
 			moveBar(iterator.next(), delta_t);
 		}
+		
+		//------------AI------------------------------------------------------------------------------------------------------
 		if(ballPos.y > getBarPos(BarKey.LEFT) && Math.abs(ballPos.y - getBarPos(BarKey.LEFT))  > delta_t * 0.75 ){
 			moveBar(new Input(BarKey.LEFT, Input.Dir.DOWN), delta_t);
 		}else if((ballPos.y < getBarPos(BarKey.LEFT) && Math.abs(ballPos.y - getBarPos(BarKey.LEFT))  > delta_t * 0.75 )){
 			moveBar(new Input(BarKey.LEFT, Input.Dir.UP), delta_t);
 		}
+		//--------------------------------------------------------------------------------------------------------------------
+		
 		moveBall(delta_t);
 		
 	}
