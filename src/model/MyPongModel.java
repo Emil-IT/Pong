@@ -9,23 +9,60 @@ import java.util.HashMap;
 
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MyPongModel.
+ */
 public class MyPongModel implements PongModel {
+	
+	/**
+	 * The Class MyPoint.
+	 */
 	private class MyPoint extends Point{
+		
+		/** The x position. */
 		double x;
+		
+		/** The y position. */
 		double y;
 	}
 	
+	/** The position of the bar. */
 	private Map<BarKey, Integer> barPos = new HashMap<BarKey, Integer>();
+	
+	/** The height of the bar. */
 	private Map<BarKey, Integer> barHeight = new HashMap<BarKey, Integer>();
+	
+	/** The name of the left player. */
 	private String leftPlayer;
+	
+	/** The name of the right player. */
 	private String rightPlayer;
+	
+	/** The message to be displayed on screen. */
 	private String message = "hej!!!";
+	
+	/** The players' score. */
 	private Map<BarKey, Integer> score = new HashMap<BarKey, Integer>();
+	
+	/** The size of the field. */
 	private Dimension fieldSize;
+	
+	/** The position of the ball. */
 	private Point ballPos = new Point();
+	
+	/** The speed of the ball. */
 	private int ballSpeed;
+	
+	/** The direction of the ball in radians */
 	private double ballDir;
 	
+	/**
+	 * Instantiates a new pong model.
+	 *
+	 * @param leftPlayer the name of the left player
+	 * @param rightPlayer the name of the right player
+	 */
 	public MyPongModel(String leftPlayer, String rightPlayer){
 		fieldSize = new Dimension();
 		fieldSize.setSize(1500, 1000);
@@ -40,15 +77,30 @@ public class MyPongModel implements PongModel {
 		
 		
 	}
+	
+	/**
+	 * Resets the score.
+	 */
 	private void resetScore(){
 		score.put(BarKey.LEFT, 0);
 		score.put(BarKey.RIGHT, 0);
 	}
-	 private void resetBarHeight(){
+	 
+ 	/**
+ 	 * Resets height of the bar.
+ 	 */
+ 	private void resetBarHeight(){
 		 barHeight.put(BarKey.LEFT, 200);
 		 barHeight.put(BarKey.RIGHT, 200);
 	 }
 	
+	/**
+	 * Computes the positions of the bars and the ball based on input and how much time
+	 * has passed since the last computation.
+	 * @param input a set with players left and right and directions up and down
+	 * @param delta_t the time passed since the last computation in milliseconds
+	 * 
+	 */
 	public void compute(Set<Input> input, long delta_t){
 		Iterator<Input> iterator = input.iterator();
 		while(iterator.hasNext()){
@@ -67,6 +119,12 @@ public class MyPongModel implements PongModel {
 		
 	}
 	
+	/**
+	 * Moves the bar.
+	 *
+	 * @param input a set with players left and right and directions up and down
+	 * @param delta_t the time passed since the last computation in milliseconds
+	 */
 	private void moveBar(Input input, long delta_t){
 		int pos = getBarPos(input.key);
 		if(input.dir == Input.Dir.UP && pos > 100){
@@ -78,6 +136,11 @@ public class MyPongModel implements PongModel {
 		setBarPos(input.key, pos);
 	}
 	
+	/**
+	 * Moves the ball.
+	 *
+	 * @param delta_t the time passed since the last computation in milliseconds
+	 */
 	private void moveBall(long delta_t){
 		ballPos.x += ballSpeed * Math.cos(ballDir) * 0.03 * delta_t;
 		ballPos.y -= ballSpeed * Math.sin(ballDir) * 0.03 * delta_t;
@@ -128,7 +191,11 @@ public class MyPongModel implements PongModel {
 		}
 	}
 		
-	 private void resetBall(){
+	 /**
+ 	 * Resets the ball to the center of the field and resets the balls speed. The ball is sent out in a
+ 	 * random direction between 45 and 135 degrees in either direction.
+ 	 */
+ 	private void resetBall(){
 		 ballPos.setLocation(750, 500);
 		 ballDir = Math.random()*2.0*Math.PI;
 		 while(ballDir > Math.PI / 4 && ballDir < 3 * Math.PI / 4 || ballDir > 5 * Math.PI / 4 && ballDir < 7 * Math.PI / 4) ballDir = Math.random()*2.0*Math.PI;
@@ -136,30 +203,50 @@ public class MyPongModel implements PongModel {
 		 //ballDir = Math.PI / 3;
 	 }
 	 
-	 public int getBarPos(BarKey k){
+	 /** returns the position of the bar
+	  * @param k the BarKey (LEFT or RIGHT)
+ 	 */
+ 	public int getBarPos(BarKey k){
 		 return barPos.get(k);
 	 }
-	 public void setBarPos(BarKey k, int pos){
+	 
+ 	/**
+ 	 * Sets the poition of the bar to pos.
+ 	 *
+ 	 * @param k the BarKey (LEFT or RIGHT)
+ 	 * @param pos the position
+ 	 */
+ 	public void setBarPos(BarKey k, int pos){
 		 barPos.put(k, pos);
 	 }
 	 
-	 public int getBarHeight(BarKey k){
+	 /** returns the height of the bar
+	  * @param k the BarKey (LEFT or RIGHT)
+ 	  */
+ 	public int getBarHeight(BarKey k){
 		 return barHeight.get(k);
 	 }
 	 
-	 public Point getBallPos(){
+	 /** returns the position of the ball */
+ 	public Point getBallPos(){
 		 return ballPos;
 	 }
 	 
-	 public String getMessage(){
+	 /** returns the message string */
+ 	public String getMessage(){
 		 return message;
 	 }
 	 
-	 public String getScore(BarKey k){
+	 /** returns the score of the player
+	  * @param k the BarKey (LEFT or RIGHT)
+ 	 */
+ 	public String getScore(BarKey k){
 		 return "" + score.get(k);
 	 }
 	 
-	 public Dimension getFieldSize(){
+	 /** returns the size of the field
+ 	 */
+ 	public Dimension getFieldSize(){
 		 return fieldSize;
 	 }
 	 
