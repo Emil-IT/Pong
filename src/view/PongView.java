@@ -15,6 +15,7 @@ import model.PongModel;
 import model.BarKey;
 
 public class PongView {
+	static public int scale = 2;
     private final int WIDTH_PXL;
     private final int HEIGHT_PXL;
 
@@ -50,7 +51,7 @@ public class PongView {
         //initialize the View members:
         this.model = model;
 
-        WIDTH_PXL = 600;
+        WIDTH_PXL = 600*scale;
         HEIGHT_PXL = WIDTH_PXL*((int)model.getFieldSize().getHeight())/((int)model.getFieldSize().getWidth());
 
         this.ball = new Ball();
@@ -165,7 +166,7 @@ public class PongView {
  * visualizing the bar of a player
  */
 class Bar {
-    public static final int WIDTH_PXL = 10;
+    public static final int WIDTH_PXL = 10*PongView.scale;
 
     private final int XPOS;
 
@@ -195,7 +196,7 @@ class Bar {
  * visualizing the ball
  */
 class Ball {
-    public static final int SIZE = 20;
+    public static final int SIZE = 20*PongView.scale;
 
     private final JComponent comp = new JLabel("");
 
