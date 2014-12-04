@@ -92,7 +92,6 @@ public class MyPongModel implements PongModel {
 		score.put(BarKey.LEFT, 0);
 		score.put(BarKey.RIGHT, 0);
 	}
-<<<<<<< HEAD
 	 
  	/**
  	 * Resets height of the bar.
