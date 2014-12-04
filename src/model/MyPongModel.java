@@ -129,7 +129,7 @@ public class MyPongModel implements PongModel {
 		
 	}
 	
-	private void moveBar(Input input, long delta_t){
+	public void moveBar(Input input, long delta_t){
 		int pos = getBarPos(input.key);
 		if(input.dir == Input.Dir.UP && pos > barHeight.get(input.key)/2){
 			pos -= 0.55 * delta_t;
@@ -140,7 +140,7 @@ public class MyPongModel implements PongModel {
 		setBarPos(input.key, pos);
 	}
 	
-	private void moveBall(long delta_t){
+	public void moveBall(long delta_t){
 		ballPos.x += ballSpeed * Math.cos(ballDir) * 0.03 * delta_t;
 		ballPos.y -= ballSpeed * Math.sin(ballDir) * 0.03 * delta_t;
 		
@@ -202,7 +202,7 @@ public class MyPongModel implements PongModel {
 		}
 	}
 		
-	 private void resetBall(){
+	 public void resetBall(){
 		 ballPos.setLocation(750, 500);
 		 ballDir = Math.random()*2.0*Math.PI;
 		 while(ballDir > Math.PI / 4 && ballDir < 3 * Math.PI / 4 || ballDir > 5 * Math.PI / 4 && ballDir < 7 * Math.PI / 4) ballDir = Math.random()*2.0*Math.PI;
