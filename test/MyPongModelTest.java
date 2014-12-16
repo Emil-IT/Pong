@@ -39,8 +39,41 @@ public class MyPongModelTest {
 		double newDir =  testModel.ballDir * -1;
 		testModel.moveBall(30);
 		assertTrue(testModel.ballDir == newDir);
-	}	
-	//Init pos
+	}
+	@Test
+	public void testMoveBallRightGetsPointWhenBallHitLeftSide() {
+		MyPongModel testModel = new MyPongModel("P1", "P2");
+		testModel.ballDir = Math.PI;
+		testModel.ballPos.setLocation(40, 500);
+		testModel.moveBall(30);
+		assertTrue(testModel.score.get(BarKey.RIGHT) == 1);
+	}
+	@Test
+	public void testMoveBallLeftGetsPointWhenBallHitRightSide() {
+		MyPongModel testModel = new MyPongModel("P1", "P2");
+		testModel.ballDir = 0;
+		testModel.ballPos.setLocation(1460, 500);
+		testModel.moveBall(30);
+		assertTrue(testModel.score.get(BarKey.LEFT) == 1);
+	}
+	@Test
+	public void testMoveBallBounceWhenHitRightBar() {
+		MyPongModel testModel = new MyPongModel("P1", "P2");
+		testModel.ballDir = 0;
+		testModel.ballPos.setLocation(1460, 100);
+		testModel.moveBall(30);
+		assertTrue(testModel.ballDir == Math.PI);
+	}
+	@Test
+	public void testMoveBallBounceWhenHitLeftBar() {
+		MyPongModel testModel = new MyPongModel("P1", "P2");
+		testModel.ballDir = Math.PI;
+		testModel.ballPos.setLocation(40, 100);
+		testModel.moveBall(30);
+		assertTrue(testModel.ballDir == 0);
+	}
+	
+	//----------------moveBar-------------------------------
 	@Test
 	public void testMoveBarRightBarDownFromInitPos(){
 		MyPongModel testModel = new MyPongModel("P1", "P2");

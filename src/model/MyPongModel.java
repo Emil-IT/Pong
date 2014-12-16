@@ -43,7 +43,7 @@ public class MyPongModel implements PongModel {
 	private String message;
 
 	/** The players' score. */
-	private Map<BarKey, Integer> score = new HashMap<BarKey, Integer>();
+	public Map<BarKey, Integer> score = new HashMap<BarKey, Integer>();
 
 	/** The size of the field. */
 	private Dimension fieldSize;
@@ -58,7 +58,7 @@ public class MyPongModel implements PongModel {
 	public double ballDir;
 	private Map<BarKey, Integer> hitPos = new HashMap<BarKey, Integer>();
 	private boolean sim = false;
-	private boolean singleplayer = true;
+	private boolean singleplayer = false;
 	private boolean comVScom = false;
 
 	/**
