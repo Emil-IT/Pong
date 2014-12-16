@@ -14,53 +14,53 @@ import java.util.HashMap;
  * The Class MyPongModel.
  */
 public class MyPongModel implements PongModel {
-	
+
 	/**
 	 * The Class MyPoint.
 	 */
 	private class MyPoint extends Point{
-		
+
 		/** The x position. */
 		double x;
-		
+
 		/** The y position. */
 		double y;
 	}
-	
+
 	/** The position of the bar. */
-	private Map<BarKey, Integer> barPos = new HashMap<BarKey, Integer>();
-	
+	public Map<BarKey, Integer> barPos = new HashMap<BarKey, Integer>();
+
 	/** The height of the bar. */
 	private Map<BarKey, Integer> barHeight = new HashMap<BarKey, Integer>();
-	
+
 	/** The name of the left player. */
 	private String leftPlayer;
-	
+
 	/** The name of the right player. */
 	private String rightPlayer;
-	
+
 	/** The message to be displayed on screen. */
 	private String message;
-	
+
 	/** The players' score. */
 	private Map<BarKey, Integer> score = new HashMap<BarKey, Integer>();
-	
+
 	/** The size of the field. */
 	private Dimension fieldSize;
-	
+
 	/** The position of the ball. */
-	private Point ballPos = new Point();
-	
+	public Point ballPos = new Point();
+
 	/** The speed of the ball. */
 	private int ballSpeed;
-	
+
 	/** The direction of the ball in radians */
-	private double ballDir;
+	public double ballDir;
 	private Map<BarKey, Integer> hitPos = new HashMap<BarKey, Integer>();
 	private boolean sim = false;
-	private boolean singelplayer = false;
-	private boolean comVScom = true;
-	
+	private boolean singleplayer = true;
+	private boolean comVScom = false;
+
 	/**
 	 * Instantiates a new pong model.
 	 *
@@ -79,28 +79,28 @@ public class MyPongModel implements PongModel {
 		ballPos.setLocation(750, 500);
 		resetBall();
 		message =  leftPlayer + " VS " + rightPlayer;
-		
-		
-		
-		
+
+
+
+
 	}
-	
+
 	/**
 	 * Resets the score.
 	 */
-	private void resetScore(){
+	public void resetScore(){
 		score.put(BarKey.LEFT, 0);
 		score.put(BarKey.RIGHT, 0);
 	}
-	 
- 	/**
- 	 * Resets height of the bar.
- 	 */
- 	private void resetBarHeight(){
-		 barHeight.put(BarKey.LEFT, 200);
-		 barHeight.put(BarKey.RIGHT, 200);
-	 }
-	
+
+	/**
+	 * Resets height of the bar.
+	 */
+	public void resetBarHeight(){
+		barHeight.put(BarKey.LEFT, 200);
+		barHeight.put(BarKey.RIGHT, 200);
+	}
+
 	/**
 	 * Computes the positions of the bars and the ball based on input and how much time
 	 * has passed since the last computation.
@@ -113,9 +113,9 @@ public class MyPongModel implements PongModel {
 		while(iterator.hasNext()){
 			moveBar(iterator.next(), delta_t);
 		}
-		
+
 		//------------AI------------------------------------------------------------------------------------------------------
-		if(singelplayer){
+		if(singleplayer){
 			double posDir = ballDir % (2*Math.PI);
 			if(posDir < 0){
 				posDir += 2*Math.PI;
@@ -144,7 +144,7 @@ public class MyPongModel implements PongModel {
 				}
 			}
 			//----------------
-			
+
 			//Bollen rör sig åt vänster
 			if(hitPos.get(BarKey.LEFT) == -1 && posDir > Math.PI / 2 && (posDir) < 3 * Math.PI / 2){
 				calculateHitPos(BarKey.LEFT);
@@ -165,31 +165,31 @@ public class MyPongModel implements PongModel {
 			}else if(hitPos.get(BarKey.LEFT) != -1 && getBarPos(BarKey.LEFT) > hitPos.get(BarKey.LEFT) + delta_t * 0.75){
 				moveBar(new Input(BarKey.LEFT, Input.Dir.UP), delta_t);
 			}
-				//Innom träffområdet eller bollen rör sig åt höger
-
-			//		else{
-			//			if(ballPos.y > getBarPos(BarKey.LEFT) && Math.abs(ballPos.y - getBarPos(BarKey.LEFT))  > delta_t * 0.75 ){
-			//				moveBar(new Input(BarKey.LEFT, Input.Dir.DOWN), delta_t);
-			//			}else if((ballPos.y < getBarPos(BarKey.LEFT) && Math.abs(ballPos.y - getBarPos(BarKey.LEFT))  > delta_t * 0.75 )){
-			//				moveBar(new Input(BarKey.LEFT, Input.Dir.UP), delta_t);
+			//Innom träffområdet eller bollen rör sig åt höger
+			//
+			//			else{
+			//				if(ballPos.y > getBarPos(BarKey.LEFT) && Math.abs(ballPos.y - getBarPos(BarKey.LEFT))  > delta_t * 0.75 ){
+			//					moveBar(new Input(BarKey.LEFT, Input.Dir.DOWN), delta_t);
+			//				}else if((ballPos.y < getBarPos(BarKey.LEFT) && Math.abs(ballPos.y - getBarPos(BarKey.LEFT))  > delta_t * 0.75 )){
+			//					moveBar(new Input(BarKey.LEFT, Input.Dir.UP), delta_t);
+			//				}
 			//			}
-			//		}
 		}
 		//--------------------------------------------------------------------------------------------------------------------
-		
+
 		moveBall(delta_t);
-		
+
 	}
-	
 
-	private void moveBar(Input input, long delta_t){
 
-	/**
-	 * Moves the bar.
-	 *
-	 * @param input a set with players left and right and directions up and down
-	 * @param delta_t the time passed since the last computation in milliseconds
-	 */
+	public void moveBar(Input input, long delta_t){
+
+		/**
+		 * Moves the bar.
+		 *
+		 * @param input a set with players left and right and directions up and down
+		 * @param delta_t the time passed since the last computation in milliseconds
+		 */
 
 		int pos = getBarPos(input.key);
 		if(input.dir == Input.Dir.UP && pos > barHeight.get(input.key)/2){
@@ -200,19 +200,19 @@ public class MyPongModel implements PongModel {
 		}
 		setBarPos(input.key, pos);
 	}
-	
 
-	private void moveBall(long delta_t){
 
-	/**
-	 * Moves the ball.
-	 *
-	 * @param delta_t the time passed since the last computation in milliseconds
-	 */
+	public void moveBall(long delta_t){
+
+		/**
+		 * Moves the ball.
+		 *
+		 * @param delta_t the time passed since the last computation in milliseconds
+		 */
 
 		ballPos.x += ballSpeed * Math.cos(ballDir) * 0.03 * delta_t;
 		ballPos.y -= ballSpeed * Math.sin(ballDir) * 0.03 * delta_t;
-		
+
 		//Bollen träffar högerkanten
 		if(ballPos.x >= 1463){
 			ballPos.x = 1463;
@@ -233,7 +233,7 @@ public class MyPongModel implements PongModel {
 				ballDir += hit/2;
 			}
 		}
-		
+
 		//Bollen träffar vänsterkanten
 		if(ballPos.x <= 37){
 			ballPos.x = 37;
@@ -254,7 +254,7 @@ public class MyPongModel implements PongModel {
 				ballDir -= hit/2;
 			}
 		}
-		
+
 		//Bollen träffar golvet
 		if(ballPos.y >= 975){
 			if(hitPos.get(BarKey.LEFT) != -1 && !sim) calculateHitPos(BarKey.LEFT);
@@ -272,101 +272,114 @@ public class MyPongModel implements PongModel {
 	}
 
 
-	 private void resetBall(){
+	public void resetBall(){
 
-	 /**
- 	 * Resets the ball to the center of the field and resets the balls speed. The ball is sent out in a
- 	 * random direction between 45 and 135 degrees in either direction.
- 	 */
+		/**
+		 * Resets the ball to the center of the field and resets the balls speed. The ball is sent out in a
+		 * random direction between 45 and 135 degrees in either direction.
+		 */
 
-		 ballPos.setLocation(750, 500);
-		 ballDir = Math.random()*2.0*Math.PI;
-		 while(ballDir > Math.PI / 4 && ballDir < 3 * Math.PI / 4 || ballDir > 5 * Math.PI / 4 && ballDir < 7 * Math.PI / 4) ballDir = Math.random()*2.0*Math.PI;
-		 ballSpeed = 20;
-		 hitPos.put(BarKey.LEFT, -1);
-		 hitPos.put(BarKey.RIGHT, -1);
-	 }
-	 
-	 /** returns the position of the bar
-	  * @param k the BarKey (LEFT or RIGHT)
- 	 */
- 	public int getBarPos(BarKey k){
-		 return barPos.get(k);
-	 }
-	 
- 	/**
- 	 * Sets the poition of the bar to pos.
- 	 *
- 	 * @param k the BarKey (LEFT or RIGHT)
- 	 * @param pos the position
- 	 */
- 	public void setBarPos(BarKey k, int pos){
-		 barPos.put(k, pos);
-	 }
-	 
-	 /** returns the height of the bar
-	  * @param k the BarKey (LEFT or RIGHT)
- 	  */
- 	public int getBarHeight(BarKey k){
-		 return barHeight.get(k);
-	 }
-	 
-	 /** returns the position of the ball */
- 	public Point getBallPos(){
-		 return ballPos;
-	 }
-	 
-	 /** returns the message string */
- 	public String getMessage(){
-		 return message;
-	 }
-	 
-	 /** returns the score of the player
-	  * @param k the BarKey (LEFT or RIGHT)
- 	 */
- 	public String getScore(BarKey k){
-		 return "" + score.get(k);
-	 }
-	 
-	 /** returns the size of the field
- 	 */
- 	public Dimension getFieldSize(){
-		 return fieldSize;
-	 }
-	 
-	 private void calculateHitPos(BarKey key){
-		 double posDir = ballDir % (2*Math.PI);
-			if(posDir < 0){
-				posDir += 2*Math.PI;
+		ballPos.setLocation(750, 500);
+		ballDir = Math.random()*2.0*Math.PI;
+		while(ballDir > Math.PI / 4 && ballDir < 3 * Math.PI / 4 || ballDir > 5 * Math.PI / 4 && ballDir < 7 * Math.PI / 4) ballDir = Math.random()*2.0*Math.PI;
+		ballSpeed = 20;
+		hitPos.put(BarKey.LEFT, -1);
+		hitPos.put(BarKey.RIGHT, -1);
+	}
+
+	/** returns the position of the bar
+	 * @param k the BarKey (LEFT or RIGHT)
+	 */
+	public int getBarPos(BarKey k){
+		return barPos.get(k);
+	}
+
+	/**
+	 * Sets the poition of the bar to pos.
+	 *
+	 * @param k the BarKey (LEFT or RIGHT)
+	 * @param pos the position
+	 */
+	public void setBarPos(BarKey k, int pos){
+		barPos.put(k, pos);
+	}
+
+	/** returns the height of the bar
+	 * @param k the BarKey (LEFT or RIGHT)
+	 */
+	public int getBarHeight(BarKey k){
+		return barHeight.get(k);
+	}
+
+	/** returns the position of the ball */
+	public Point getBallPos(){
+		return ballPos;
+	}
+
+	/** returns the message string */
+	public String getMessage(){
+		return message;
+	}
+
+	/** returns the score of the player
+	 * @param k the BarKey (LEFT or RIGHT)
+	 */
+	public String getScore(BarKey k){
+		return "" + score.get(k);
+	}
+
+	/** returns the size of the field
+	 */
+	public Dimension getFieldSize(){
+		return fieldSize;
+	}
+
+	private void calculateHitPos(BarKey key){
+		double posDir = ballDir % (2*Math.PI);
+		if(posDir < 0){
+			posDir += 2*Math.PI;
+		}
+		sim = true;
+		if((posDir) < 3*Math.PI / 2 && (posDir) > Math.PI / 2){
+			Point posCopy = new Point(ballPos.x, ballPos.y);
+			int speedCopy = ballSpeed;
+			double dirCopy = ballDir;
+			while(ballPos.x > 37){
+				moveBall(30);
 			}
-		 sim = true;
-		 if((posDir) < 3*Math.PI / 2 && (posDir) > Math.PI / 2){
-			 Point posCopy = new Point(ballPos.x, ballPos.y);
-			 int speedCopy = ballSpeed;
-			 double dirCopy = ballDir;
-			 while(ballPos.x > 37){
-				 moveBall(30);
-			 }
-			 int returnValue = ballPos.y;
-			 ballPos = posCopy;
-			 ballSpeed = speedCopy;
-			 ballDir = dirCopy;
-			 hitPos.put(key, returnValue);
-		 }else{
-			 Point posCopy = new Point(ballPos.x, ballPos.y);
-			 int speedCopy = ballSpeed;
-			 double dirCopy = ballDir;
-			 while(ballPos.x < 1463){
-				 moveBall(30);
-			 }
-			 int returnValue = ballPos.y;
-			 ballPos = posCopy;
-			 ballSpeed = speedCopy;
-			 ballDir = dirCopy;
-			 hitPos.put(key, returnValue);
-		 }
-		 sim = false;
-	 }
-	 
-	
+			int returnValue = ballPos.y;
+			ballPos = posCopy;
+			ballSpeed = speedCopy;
+			ballDir = dirCopy;
+			hitPos.put(key, returnValue);
+		}else{
+			Point posCopy = new Point(ballPos.x, ballPos.y);
+			int speedCopy = ballSpeed;
+			double dirCopy = ballDir;
+			while(ballPos.x < 1463){
+				moveBall(30);
+			}
+			int returnValue = ballPos.y;
+			ballPos = posCopy;
+			ballSpeed = speedCopy;
+			ballDir = dirCopy;
+			hitPos.put(key, returnValue);
+		}
+		sim = false;
+	}
+
+	public void setSingleplayer(boolean b){
+		singleplayer = b;
+	}
+	public boolean getSingleplayer(){
+		return singleplayer;
+	}
+	public double getBallDir(){
+		return ballDir;
+	}
+	public int getBallSpeed(){
+		return ballSpeed;
+	}
+
+
 }
